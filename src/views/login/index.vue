@@ -1,104 +1,125 @@
 <template>
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
+  <div class="content-container">
+    <div class="login-container">
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
+        <div class="select-tenant">当前租户：<span>{{ currentTenant.name }}</span>（<a href="javascript:;" @click="showSwitchTenant=true">修改</a>）</div>
+        <div class="title-container">
+          <h3 class="title">登录</h3>
+        </div>
 
-      <div class="title-container">
-        <h3 class="title">Login Form</h3>
-      </div>
-
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          autocomplete="on"
-        />
-      </el-form-item>
-
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="password">
+        <el-form-item prop="username">
           <span class="svg-container">
-            <svg-icon icon-class="password" />
+            <svg-icon icon-class="user" />
           </span>
           <el-input
-            :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
-            :type="passwordType"
-            placeholder="Password"
-            name="password"
-            tabindex="2"
+            ref="username"
+            v-model="loginForm.username"
+            placeholder="用户名"
+            name="username"
+            type="text"
+            tabindex="1"
             autocomplete="on"
-            @keyup.native="checkCapslock"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
           />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-          </span>
         </el-form-item>
-      </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+        <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+          <el-form-item prop="password">
+            <span class="svg-container">
+              <svg-icon icon-class="password" />
+            </span>
+            <el-input
+              :key="passwordType"
+              ref="password"
+              v-model="loginForm.password"
+              :type="passwordType"
+              placeholder="密码"
+              name="password"
+              tabindex="2"
+              autocomplete="on"
+              @keyup.native="checkCapslock"
+              @blur="capsTooltip = false"
+              @keyup.enter.native="handleLogin"
+            />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            </span>
+          </el-form-item>
+        </el-tooltip>
 
-      <div style="position:relative">
-        <div class="tips">
-          <span>Username : admin</span>
-          <span>Password : any</span>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登 录</el-button>
+
+        <el-row>
+          <el-col :span="8">
+            <el-link type="info"><router-link to="/forgot-password">忘记密码了?</router-link></el-link>
+          </el-col>
+          <el-col :span="16" style="text-align:right">
+            <!-- <el-link type="info"><router-link to="/email-activation">注册新租户</router-link></el-link>
+          <el-divider direction="vertical" /> -->
+            <el-link type="info"><router-link to="/email-activation">发送激活邮件</router-link></el-link>
+          </el-col>
+        </el-row>
+
+        <!-- 第三方登录功能待开发，先隐藏起来 -->
+        <div v-if="false" style="position:relative;margin-top:2em;">
+          <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
+            第三方登录
+          </el-button>
         </div>
-        <div class="tips">
-          <span style="margin-right:18px;">Username : editor</span>
-          <span>Password : any</span>
-        </div>
+      </el-form>
 
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          Or connect with
-        </el-button>
-      </div>
-    </el-form>
-
-    <el-dialog title="Or connect with" :visible.sync="showDialog">
-      Can not be simulated on local, so please combine you own business simulation! ! !
-      <br>
-      <br>
-      <br>
-      <social-sign />
-    </el-dialog>
+      <el-dialog title="第三方登录" :visible.sync="showDialog">
+        Can not be simulated on local, so please combine you own business simulation! ! !
+        <br>
+        <br>
+        <br>
+        <social-sign />
+      </el-dialog>
+    </div>
+    <switch-tenant :show.sync="showSwitchTenant" />
   </div>
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
+import SwitchTenant from './components/SwitchTenant'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Login',
-  components: { SocialSign },
+  components: { SocialSign, SwitchTenant },
   data() {
     const validateUsername = (rule, value, callback) => {
+      if (value == null) {
+        callback(new Error('请输入用户名'))
+        return
+      }
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('请输入正确的用户名'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
+      if (value == null) {
+        callback(new Error('请输入密码'))
+        return
+      }
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码不能少于6位数'))
       } else {
         callback()
       }
     }
     return {
+      showSwitchTenant: false,
       loginForm: {
+        grant_type: 'password',
+        scope: 'Erp',
         username: 'admin',
-        password: '111111'
+        password: '1q2w3E*',
+        client_id: 'Erp_App',
+        client_secret: '1q2w3e*'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -111,6 +132,9 @@ export default {
       redirect: undefined,
       otherQuery: {}
     }
+  },
+  computed: {
+    ...mapGetters(['currentTenant'])
   },
   watch: {
     $route: {
@@ -138,9 +162,17 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    checkCapslock(e) {
-      const { key } = e
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
+    checkCapslock({ shiftKey, key } = {}) {
+      if (key && key.length === 1) {
+        if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
+          this.capsTooltip = true
+        } else {
+          this.capsTooltip = false
+        }
+      }
+      if (key === 'CapsLock' && this.capsTooltip === true) {
+        this.capsTooltip = false
+      }
     },
     showPwd() {
       if (this.passwordType === 'password') {
@@ -200,6 +232,22 @@ export default {
 }
 </script>
 
+<style scoped>
+.el-form-item{
+  margin-bottom: 22px
+}
+.el-divider{
+  background-color: #909399;
+}
+.select-tenant{
+  text-align: center;
+  color:#fff;
+  padding-bottom: 20px;
+}
+.select-tenant a{
+  color: #74bcff;
+}
+</style>
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
@@ -252,17 +300,18 @@ $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 
-.login-container {
+.content-container{
   min-height: 100%;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-
+}
+.login-container {
   .login-form {
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 120px 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }

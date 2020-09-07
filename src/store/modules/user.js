@@ -1,5 +1,6 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { abpApplicationConfiguration } from '@/api/abpFramework'
+import { login, logout } from '@/api/auth'
+import { getToken, setToken, removeToken, getTenant, setTenant } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
@@ -7,7 +8,8 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  permissions: [],
+  currentTenant: getTenant()
 }
 
 const mutations = {
@@ -23,20 +25,22 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
+  SET_PERMISSIONS: (state, permissions) => {
+    state.permissions = permissions
+  },
+  SET_TENANT: (state, tenant) => {
+    state.currentTenant = tenant
   }
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login(userInfo).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        commit('SET_TOKEN', data.access_token)
+        setToken(data.access_token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -45,31 +49,39 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo({ commit }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
+      abpApplicationConfiguration.getApplicationConfiguration().then(response => {
+        const { auth } = response
+        if (!auth) {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
+        // 认证数组不能为空
+        if (!auth.grantedPolicies || auth.grantedPolicies.length <= 0) {
+          reject('getInfo: auth must be a non-null array!')
+        }
+        const permissions = []
+        for (const key in auth.grantedPolicies) {
+          if (auth.grantedPolicies[key]) {
+            permissions.push(key)
+          }
         }
 
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
-        resolve(data)
+        commit('SET_PERMISSIONS', permissions)
+        commit('SET_NAME', response.currentUser.userName)
+        resolve(permissions)
       }).catch(error => {
         reject(error)
       })
     })
+  },
+
+  // 切换租户
+  switchTenant({ commit }, tenant) {
+    commit('SET_TENANT', tenant)
+    // 存到cookie，为了刷新页面时还能获取到该值
+    setTenant(tenant)
   },
 
   // user logout
@@ -77,7 +89,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
+        commit('SET_PERMISSIONS', [])
         removeToken()
         resetRouter()
 
@@ -96,7 +108,7 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
+      commit('SET_PERMISSIONS', [])
       removeToken()
       resolve()
     })
