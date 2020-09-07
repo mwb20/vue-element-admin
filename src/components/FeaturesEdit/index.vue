@@ -64,6 +64,7 @@
 <script>
 import { features } from '@/api/abpFramework'
 export default {
+  name: 'FeaturesEditComponent',
   data() {
     return {
       title: null,

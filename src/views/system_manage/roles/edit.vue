@@ -21,6 +21,7 @@
 <script>
 import { role } from '@/api/abpFramework'
 export default {
+  name: 'RolesEdit',
   data() {
     return {
       title: null,

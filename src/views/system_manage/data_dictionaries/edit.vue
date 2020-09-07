@@ -32,6 +32,7 @@
 <script>
 import { dictionaries } from '@/api/module/dataDictionary'
 export default {
+  name: 'DataDictionariesEdit',
   data() {
     return {
       title: null,

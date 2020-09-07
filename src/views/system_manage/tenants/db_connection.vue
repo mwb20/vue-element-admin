@@ -17,6 +17,7 @@
 <script>
 import { tenant } from '@/api/abpFramework'
 export default {
+  name: 'TenantsConn',
   data() {
     return {
       id: null,

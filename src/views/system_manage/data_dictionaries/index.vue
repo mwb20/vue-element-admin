@@ -85,7 +85,7 @@ import { dictionaries } from '@/api/module/dataDictionary'
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'CommonDictionaries',
+  name: 'DataDictionaries',
   components: {
     Pagination,
     dataView: () => import('./view'),

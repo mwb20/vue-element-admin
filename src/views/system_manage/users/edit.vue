@@ -71,6 +71,7 @@
 <script>
 import { user, role } from '@/api/abpFramework'
 export default {
+  name: 'UsersEdit',
   data() {
     return {
       isCreated: false,

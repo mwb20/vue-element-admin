@@ -29,6 +29,7 @@
 <script>
 import { dictionaries } from '@/api/module/dataDictionary'
 export default {
+  name: 'DataDictionariesView',
   data() {
     return {
       dialogVisible: false,

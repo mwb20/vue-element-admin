@@ -5,6 +5,7 @@
 import { commonDictionaries } from '@/api/abpFramework'
 
 export default {
+  name: 'DataDictionaryComponent',
   props: {
     value: {
       type: Array,

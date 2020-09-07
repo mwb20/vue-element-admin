@@ -72,6 +72,7 @@
 <script>
 import { permissions } from '@/api/abpFramework'
 export default {
+  name: 'PermissionsEditComponent',
   data() {
     return {
       title: null,

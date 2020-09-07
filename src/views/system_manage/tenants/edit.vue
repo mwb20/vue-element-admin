@@ -29,6 +29,7 @@
 <script>
 import { tenant } from '@/api/abpFramework'
 export default {
+  name: 'TenantsEdit',
   data() {
     return {
       title: '',
