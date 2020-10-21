@@ -19,6 +19,9 @@
       <el-form-item label="顺序" prop="sort" verify number>
         <el-input v-model.number="editForm.sort" autocomplete="off" />
       </el-form-item>
+      <el-form-item label="说明" prop="value">
+        <el-input v-model="editForm.description" autocomplete="off" />
+      </el-form-item>
       <el-form-item label="是否启用" prop="isActive" verify>
         <el-switch v-model="editForm.isActive" class="drawer-switch" />
       </el-form-item>

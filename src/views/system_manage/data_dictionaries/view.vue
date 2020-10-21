@@ -14,6 +14,9 @@
         <div class="details-content"><label>顺序：</label>{{ viewData.sort }}</div>
       </el-col>
       <el-col :span="12">
+        <div class="details-content"><label>说明：</label>{{ viewData.description }}</div>
+      </el-col>
+      <el-col :span="12">
         <div class="details-content"><label>是否启用：</label>
           <el-tag :type="viewData.isActive? 'success':'info'" effect="dark">
             {{ viewData.isActive?'启用':'禁用' }}

@@ -3,6 +3,8 @@ import Layout from '@/layout'
 const systemModule = {
   path: '/admin',
   component: Layout,
+  redirect: '/admin/dataDictionaries',
+  name: 'SystemManage',
   meta: { title: '系统管理', icon: 'component', noCache: true },
   children: [
     {

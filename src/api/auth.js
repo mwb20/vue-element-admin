@@ -1,5 +1,12 @@
 import axios from 'axios'
+import store from '@/store'
 export function login(data) {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+  if (store.getters.currentTenant.id) {
+    headers['__tenant'] = store.getters.currentTenant.id
+  }
   return axios({
     url: `${process.env.VUE_APP_Auth_API}connect/token`,
     method: 'POST',
@@ -14,9 +21,7 @@ export function login(data) {
       }
       return ret
     }],
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    headers: headers
   })
 }
 

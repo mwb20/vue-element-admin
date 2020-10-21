@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 export const dictionaries = {
-  createDictionarie: function({ parentId, code, name, value, sort, isActive, hasChildren }) {
+  createDictionarie: function({ parentId, code, name, value, sort, isActive, hasChildren, description }) {
     return request({
       url: '/api/DataDictionary/Dictionaries',
       method: 'post',
-      data: { parentId, code, name, value, sort, isActive, hasChildren }
+      data: { parentId, code, name, value, sort, isActive, hasChildren, description }
     })
   },
   deleteDictionaries: function(id) {
@@ -21,12 +21,12 @@ export const dictionaries = {
       params: { filter, skipCount, maxResultCount }
     })
   },
-  updateDictionaries: function({ id, parentId, code, name, value, sort, isActive, hasChildren }) {
+  updateDictionaries: function({ id, parentId, code, name, value, sort, isActive, hasChildren, description }) {
     return request({
       url: '/api/DataDictionary/Dictionaries',
       method: 'put',
       params: { id },
-      data: { parentId, code, name, value, sort, isActive, hasChildren }
+      data: { parentId, code, name, value, sort, isActive, hasChildren, description }
     })
   },
   getDictionarie: function(id) {
