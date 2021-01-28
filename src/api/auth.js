@@ -1,6 +1,8 @@
 import axios from 'axios'
 import store from '@/store'
-export function login(data) {
+import { Message } from 'element-ui'
+
+export async function login(data) {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
@@ -22,12 +24,26 @@ export function login(data) {
       return ret
     }],
     headers: headers
-  })
+  }).catch(errorHandler)
 }
 
-export function logout() {
+export async function logout() {
   return axios({
     url: `${process.env.VUE_APP_Auth_API}api/account/logout`,
     method: 'get'
+  })
+}
+
+function errorHandler(err) {
+  let msg
+  if (err.response && err.response.data && err.response.data.error) {
+    msg = err.response.data.error
+  } else {
+    msg = err
+  }
+  Message({
+    message: msg,
+    type: 'error',
+    duration: 5 * 1000
   })
 }
