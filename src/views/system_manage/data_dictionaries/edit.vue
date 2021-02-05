@@ -38,7 +38,7 @@ export default {
   name: 'DataDictionariesEdit',
   data() {
     return {
-      title: null,
+      title: '新增',
       parentName: undefined,
       dialogVisible: false,
       editForm: { isActive: true, sort: 0 }

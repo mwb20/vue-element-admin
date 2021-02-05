@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="tools-table">
     <div class="tools-container right-align">
-      <el-button type="primary" size="small" @click="$refs.edit.created()"><i class="el-icon-plus" />创建</el-button>
+      <el-button type="primary" size="small" @click="$refs.edit.created()"><i class="el-icon-plus" />新增</el-button>
     </div>
     <div class="app-container">
       <el-table

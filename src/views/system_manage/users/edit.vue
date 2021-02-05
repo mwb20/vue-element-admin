@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       isCreated: false,
-      title: '',
+      title: '新增',
       dialogVisible: false,
       tabsValue: 'userInfo',
       editForm: {},
@@ -175,7 +175,6 @@ export default {
     },
     created() {
       this.isCreated = true
-      this.title = '创建'
       // 显示dialog
       this.dialogVisible = true
       this.loadRoles(null)

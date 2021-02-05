@@ -24,7 +24,7 @@ export default {
   name: 'RolesEdit',
   data() {
     return {
-      title: null,
+      title: '新增',
       dialogVisible: false,
       editForm: {}
     }

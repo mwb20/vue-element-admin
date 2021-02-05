@@ -1,23 +1,23 @@
 ﻿<template>
   <el-dialog :title="title" :visible.sync="dialogVisible" :close-on-click-modal="false" @closed="closeHandle">
-    <el-form ref="editForm" :model="editForm" status-icon label-width="120px" class="lable-same-line">
-      <el-form-item label="租户名称" prop="name" verify>
-        <el-input v-model="editForm.name" autocomplete="off" />
+    <el-form ref="editForm" :model="editForm" status-icon label-width="100px" class="lable-same-line">
+      <el-form-item v-show="false" label="父id" prop="parentId">
+        <el-input v-model="editForm.parentId" />
       </el-form-item>
-      <el-form-item v-if="isCreated" label="管理员邮箱地址" prop="adminEmailAddress" verify email>
-        <el-input v-model="editForm.adminEmailAddress" autocomplete="off" />
+      <el-form-item v-show="parentName!==undefined" label="父节点">
+        <el-input v-model="parentName" autocomplete="off" readonly="readonly" />
       </el-form-item>
-      <el-form-item v-if="isCreated" label="管理员密码" prop="adminPassword" verify loginpwd="6">
-        <el-input ref="password" v-model="editForm.adminPassword" type="password" autocomplete="off" />
+      <el-form-item label="编码" prop="uniqueName" verify>
+        <el-input v-model="editForm.uniqueName" autocomplete="off" />
       </el-form-item>
-      <el-form-item
-        v-if="isCreated"
-        label="核对密码"
-        prop="passwordRepeat"
-        :verify="verifyPassword"
-        :watch="editForm.adminPassword"
-      >
-        <el-input ref="passwordRepeat" v-model="editForm.passwordRepeat" type="password" autocomplete="off" />
+      <el-form-item label="名称" prop="displayName" verify>
+        <el-input v-model="editForm.displayName" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="描述" prop="description">
+        <el-input v-model="editForm.description" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="媒体资源" prop="mediaResources">
+        <el-input v-model="editForm.mediaResources" autocomplete="off" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -27,25 +27,21 @@
   </el-dialog>
 </template>
 <script>
-import { tenant } from '@/api/abpFramework'
+import { category } from '@/api/module/eshop'
 export default {
-  name: 'TenantsEdit',
+  name: 'CategoryEdit',
   data() {
     return {
       title: '新增',
-      isCreated: false,
       dialogVisible: false,
-      editForm: {}
+      parentName: undefined,
+      editForm: { }
     }
   },
   methods: {
-    verifyPassword(rule, val, callback) {
-      if (val !== this.editForm.adminPassword) callback(Error('两次输入密码不一致!'))
-      else callback()
-    },
     loadData(id) {
       const loading = this.$loading()
-      tenant.getTenant(id).then((result) => {
+      category.getCategory(id).then((result) => {
         loading.close()
         // 显示dialog
         this.dialogVisible = true
@@ -62,20 +58,20 @@ export default {
           const loading = this.$loading()
           // id有值执行更新方法
           if (this.editForm.id !== undefined) {
-            tenant.updateTenant(this.editForm)
+            category.updateCategory(this.editForm)
               .then((result) => {
                 loading.close()
-                this.$emit('save-success')
+                this.$emit('save-success', this.editForm.parentId)
                 this.$message.success('保存成功')
                 this.dialogVisible = false
               }).catch(() => {
                 loading.close()
               })
           } else {
-            tenant.createTenant(this.editForm)
+            category.createCategory(this.editForm)
               .then((result) => {
                 loading.close()
-                this.$emit('save-success')
+                this.$emit('save-success', this.editForm.parentId)
                 this.$message.success('保存成功')
                 this.dialogVisible = false
               }).catch(() => {
@@ -93,13 +89,13 @@ export default {
       }
     },
     edit(id, title) {
-      this.isCreated = false
       this.title = '编辑 - ' + title
       this.loadData(id)
     },
-    created() {
-      this.isCreated = true
-      // 显示dialog
+    created(parentId, parentName) {
+      this.title = '新增类别'
+      this.editForm.parentId = parentId
+      this.parentName = parentName
       this.dialogVisible = true
     }
   }
