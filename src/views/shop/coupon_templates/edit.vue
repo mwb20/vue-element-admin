@@ -1,25 +1,25 @@
 ﻿<template>
-  <el-dialog :title="title" :visible.sync="dialogVisible" :close-on-click-modal="false" @closed="closeHandle">
+  <el-dialog :title="title" :visible.sync="dialogVisible" top="5vh" :close-on-click-modal="false" @closed="closeHandle">
     <el-form ref="editForm" :model="editForm" status-icon label-width="100px" class="lable-same-line">
-      <el-form-item label="StoreId" prop="storeId" verify>
+      <el-form-item label="店铺" prop="storeId" verify>
         <el-input v-model="editForm.storeId" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="CouponType" prop="couponType" verify>
+      <el-form-item label="类型" prop="couponType" verify>
         <el-input v-model="editForm.couponType" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="UniqueName" prop="uniqueName" verify>
+      <el-form-item label="编码" prop="uniqueName" verify>
         <el-input v-model="editForm.uniqueName" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="DisplayName" prop="displayName" verify>
+      <el-form-item label="名称" prop="displayName" verify>
         <el-input v-model="editForm.displayName" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="Description" prop="description" verify>
+      <el-form-item label="描述" prop="description">
         <el-input v-model="editForm.description" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="UsableDuration" prop="usableDuration" verify>
+      <el-form-item label="持续时间" prop="usableDuration" verify>
         <el-input v-model="editForm.usableDuration" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="UsableBeginTime" prop="usableBeginTime" verify>
+      <el-form-item label="启用时间" prop="usableBeginTime" verify>
         <el-date-picker
           v-model="editForm.usableBeginTime"
           type="date"
@@ -28,7 +28,7 @@
           value-format="yyyy-MM-dd"
         />
       </el-form-item>
-      <el-form-item label="UsableEndTime" prop="usableEndTime" verify>
+      <el-form-item label="有效期" prop="usableEndTime" verify>
         <el-date-picker
           v-model="editForm.usableEndTime"
           type="date"
@@ -37,32 +37,17 @@
           value-format="yyyy-MM-dd"
         />
       </el-form-item>
-      <el-form-item label="ConditionAmount" prop="conditionAmount" verify>
+      <el-form-item label="条件金额" prop="conditionAmount" verify>
         <el-input v-model="editForm.conditionAmount" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="DiscountAmount" prop="discountAmount" verify>
+      <el-form-item label="优惠额" prop="discountAmount" verify>
         <el-input v-model="editForm.discountAmount" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="Currency" prop="currency" verify>
+      <el-form-item label="货币" prop="currency" verify>
         <el-input v-model="editForm.currency" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="IsUnscoped" prop="isUnscoped" verify>
+      <el-form-item label="是否通用" prop="isUnscoped" verify>
         <el-switch v-model="editForm.isUnscoped" class="drawer-switch" />
-      </el-form-item>
-      <el-form-item label="ExtraProperties" prop="extraProperties" verify>
-        <el-input v-model="editForm.extraProperties" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="ConcurrencyStamp" prop="concurrencyStamp" verify>
-        <el-input v-model="editForm.concurrencyStamp" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="CreatorId" prop="creatorId" verify>
-        <el-input v-model="editForm.creatorId" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="LastModifierId" prop="lastModifierId" verify>
-        <el-input v-model="editForm.lastModifierId" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="DeleterId" prop="deleterId" verify>
-        <el-input v-model="editForm.deleterId" autocomplete="off" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -79,7 +64,7 @@ export default {
     return {
       title: '新增',
       dialogVisible: false,
-      editForm: { }
+      editForm: { isUnscoped: false }
     }
   },
   methods: {

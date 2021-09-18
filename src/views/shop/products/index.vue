@@ -6,13 +6,19 @@
     <div class="app-container">
       <div class="filter-container" @keydown.enter="listQuery.page=1,getList()">
         <el-row :gutter="10">
-          <el-col :span="12">
+          <el-col :span="8">
             <label class="title">搜索</label>
+            <el-input v-model="storeName" :readonly="true" placeholder="请选择一个店铺进行查看" class="input-with-select" size="small">
+              <el-button slot="append" icon="el-icon-set-up" @click="$refs.selectionStore.show()" />
+            </el-input>
+          </el-col>
+          <el-col :span="8">
+            <label class="title">&nbsp;</label>
             <el-input v-model="listQuery.filter" placeholder="请输入搜索内容" class="input-with-select" size="small">
               <el-button slot="append" icon="el-icon-search" @click="listQuery.page=1,getList()" />
             </el-input>
           </el-col>
-          <el-col :span="12" style="padding-right:15px;text-align:right;">
+          <el-col :span="8" style="padding-right:15px;text-align:right;">
             <label class="title" />
             <el-popover
               placement="right"
@@ -69,29 +75,35 @@
       <pagination v-show="tableData.totalCount>0" :total="tableData.totalCount" :page.sync="listQuery.page" :limit.sync="listQuery.maxResultCount" @pagination="getList" />
       <data-view ref="view" />
       <data-edit ref="edit" @save-success="getList" />
+      <select-store ref="selectionStore" @selection="selectionStoreEvent" />
     </div>
   </div>
 </template>
 <script>
-import { product } from '@/api/module/eshop'
+import { product, shopStore } from '@/api/module/eshop'
+import store from '@/store'
+import SelectStore from '../store_owners/select_store.vue'
 
 export default {
   name: 'Products',
   components: {
     Pagination: () => import('@/components/Pagination'),
     DataView: () => import('./view'),
-    DataEdit: () => import('./edit')
+    DataEdit: () => import('./edit'),
+    SelectStore
   },
   data() {
     return {
       tableKey: 1,
       listLoading: false,
       tableData: { totalCount: 0, items: [] },
+      storeName: '',
       listQuery: {
         filter: undefined,
         page: 1,
         skipCount: 0,
-        maxResultCount: 10
+        maxResultCount: 10,
+        storeId: store.getters.eshopStoreId
       },
       cols: [
         {
@@ -103,16 +115,15 @@ export default {
           show: true
         },
         {
-          key: 'ProductUniqueName',
-          label: '编号',
-          sortable: true,
+          key: 'uniqueName',
+          label: '编码',
           width: '160',
           showTooltip: true,
           show: true
         },
         {
           key: 'displayName',
-          label: '名称',
+          label: '商品名',
           sortable: false,
           showTooltip: true,
           show: true
@@ -146,19 +157,32 @@ export default {
       ]
     }
   },
-  created() {
+  mounted() {
+    if (this.listQuery.storeId) {
+      shopStore.getStore(this.listQuery.storeId).then(res => {
+        this.storeName = res.name
+      }).catch(() => {
+        this.listLoading = false
+      })
+    }
     this.getList()
   },
   methods: {
     getList() {
-      this.listLoading = true
-      this.listQuery.skipCount = (this.listQuery.page - 1) * this.listQuery.maxResultCount
-      product.getProducts(this.listQuery).then(response => {
-        this.tableData = response
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
+      // 能获取到选中店铺id时获取店铺名和商品
+      if (this.listQuery.storeId) {
+        this.listLoading = true
+        this.listQuery.skipCount = (this.listQuery.page - 1) * this.listQuery.maxResultCount
+        product.getProducts(this.listQuery).then(response => {
+          this.tableData = response
+          this.listLoading = false
+        }).catch(() => {
+          this.listLoading = false
+        })
+      } else {
+        // 获取不到店铺id时弹出选择店铺
+        this.$refs.selectionStore.show()
+      }
     },
     sortingChange(a) {
       if (a.order) {
@@ -176,10 +200,10 @@ export default {
     handleCommand(command) {
       switch (command.type) {
         case 'view':
-          this.$refs.view.show(command.row.id, command.row.orderNumber)
+          this.$refs.view.show(command.row.id, command.row.displayName)
           break
         case 'edit':
-          this.$refs.edit.edit(command.row.id, command.row.orderNumber)
+          this.$refs.edit.edit(command.row.id, command.row.displayName)
           break
         case 'del':
           this.$confirm('此操作将永久删除数据, 是否继续?', '提示', {
@@ -201,9 +225,9 @@ export default {
     },
     formatPublished(cellValue) {
       if (cellValue) {
-        return '<span class="el-tag el-tag--medium el-tag--light">未发布</span>'
+        return '<span class="el-tag el-tag--success el-tag--medium el-tag--light">已发布</span>'
       }
-      return '<span class="el-tag el-tag--success el-tag--medium el-tag--light">已发布</span>'
+      return '<span class="el-tag el-tag--medium el-tag--light">未发布</span>'
     },
     formatInventoryStrategy(cellValue) {
       if (cellValue === 1) {
@@ -215,6 +239,12 @@ export default {
       if (cellValue === 4) {
         return '<span class="el-tag el-tag--info el-tag--light">支付后减库存</span>'
       }
+    },
+    selectionStoreEvent(storeInfo) {
+      this.$store.dispatch('eshop/setStoreId', storeInfo.storeId)
+      this.listQuery.storeId = storeInfo.storeId
+      this.storeName = storeInfo.storeName
+      this.getList()
     }
   }
 }

@@ -95,42 +95,15 @@ export default {
       },
       cols: [
         {
-          key: 'storeId',
-          label: 'StoreId',
-          sortable: true,
-          width: '100',
+          key: 'ownerUserName',
+          label: '管理员账号',
+          width: '200',
           showTooltip: true,
           show: true
         },
         {
-          key: 'ownerUserId',
-          label: 'OwnerUserId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'extraProperties',
-          label: 'ExtraProperties',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'creatorId',
-          label: 'CreatorId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'lastModifierId',
-          label: 'LastModifierId',
-          sortable: true,
-          width: '100',
+          key: 'storeName',
+          label: '店铺名',
           showTooltip: true,
           show: true
         }
@@ -170,7 +143,7 @@ export default {
           this.$refs.view.show(command.row.id, command.row.orderNumber)
           break
         case 'edit':
-          this.$refs.edit.edit(command.row.id, command.row.orderNumber)
+          this.$refs.edit.edit(command.row.id, command.row.storeName + '（' + command.row.ownerUserName + '）')
           break
         case 'del':
           this.$confirm('此操作将永久删除数据, 是否继续?', '提示', {

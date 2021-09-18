@@ -96,16 +96,8 @@ export default {
       },
       cols: [
         {
-          key: 'storeId',
-          label: 'StoreId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
           key: 'couponType',
-          label: 'CouponType',
+          label: '类型',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -113,39 +105,36 @@ export default {
         },
         {
           key: 'uniqueName',
-          label: 'UniqueName',
-          sortable: true,
+          label: '编码',
           width: '100',
           showTooltip: true,
           show: true
         },
         {
           key: 'displayName',
-          label: 'DisplayName',
-          sortable: true,
+          label: '名称',
           width: '100',
           showTooltip: true,
           show: true
         },
         {
           key: 'description',
-          label: 'Description',
-          sortable: true,
+          label: '描述',
           width: '100',
           showTooltip: true,
           show: true
         },
         {
           key: 'usableDuration',
-          label: 'UsableDuration',
+          label: '持续时间',
           sortable: true,
-          width: '100',
+          width: '130',
           showTooltip: true,
           show: true
         },
         {
           key: 'usableBeginTime',
-          label: 'UsableBeginTime',
+          label: '启用时间',
           sortable: true,
           width: '120',
           formatter: this.formatDate,
@@ -154,7 +143,7 @@ export default {
         },
         {
           key: 'usableEndTime',
-          label: 'UsableEndTime',
+          label: '有效期',
           sortable: true,
           width: '120',
           formatter: this.formatDate,
@@ -163,15 +152,15 @@ export default {
         },
         {
           key: 'conditionAmount',
-          label: 'ConditionAmount',
+          label: '条件金额',
           sortable: true,
-          width: '100',
+          width: '130',
           showTooltip: true,
           show: true
         },
         {
           key: 'discountAmount',
-          label: 'DiscountAmount',
+          label: '折扣额',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -179,49 +168,16 @@ export default {
         },
         {
           key: 'currency',
-          label: 'Currency',
-          sortable: true,
+          label: '货币',
           width: '100',
           showTooltip: true,
           show: true
         },
         {
           key: 'isUnscoped',
-          label: 'IsUnscoped',
+          label: '是否通用',
           sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'extraProperties',
-          label: 'ExtraProperties',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'creatorId',
-          label: 'CreatorId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'lastModifierId',
-          label: 'LastModifierId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'deleterId',
-          label: 'DeleterId',
-          sortable: true,
-          width: '100',
+          width: '130',
           showTooltip: true,
           show: true
         }

@@ -6,6 +6,7 @@ import router, { resetRouter } from '@/router'
 const state = {
   token: getToken(),
   name: '',
+  userId: '',
   avatar: '',
   introduction: '',
   permissions: [],
@@ -30,6 +31,9 @@ const mutations = {
   },
   SET_TENANT: (state, tenant) => {
     state.currentTenant = tenant
+  },
+  SET_USERID: (state, userId) => {
+    state.userId = userId
   }
 }
 
@@ -38,9 +42,8 @@ const actions = {
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
       login(userInfo).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.access_token)
-        setToken(data.access_token)
+        commit('SET_TOKEN', response.access_token)
+        setToken(response.access_token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -58,7 +61,7 @@ const actions = {
         }
 
         // 认证数组不能为空
-        if (!auth.grantedPolicies || auth.grantedPolicies.length <= 0) {
+        if (!auth.grantedPolicies || Object.keys(auth.grantedPolicies).length <= 0) {
           reject('getInfo: auth must be a non-null array!')
         }
         const permissions = []
@@ -70,6 +73,7 @@ const actions = {
 
         commit('SET_PERMISSIONS', permissions)
         commit('SET_NAME', response.currentUser.userName)
+        commit('SET_USERID', response.currentUser.id)
         resolve(permissions)
       }).catch(error => {
         reject(error)
@@ -92,6 +96,9 @@ const actions = {
         commit('SET_PERMISSIONS', [])
         removeToken()
         resetRouter()
+
+        // 移除店铺Id
+        dispatch('eshop/removeStoreId', null, { root: true })
 
         // reset visited views and cached views
         // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485

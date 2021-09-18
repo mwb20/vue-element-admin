@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-import { store } from '@/api/module/eshop'
+import { shopStore } from '@/api/module/eshop'
 
 export default {
   name: 'Stores',
@@ -96,41 +96,8 @@ export default {
       cols: [
         {
           key: 'name',
-          label: 'Name',
+          label: '店铺名称',
           sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'extraProperties',
-          label: 'ExtraProperties',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'creatorId',
-          label: 'CreatorId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'lastModifierId',
-          label: 'LastModifierId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'deleterId',
-          label: 'DeleterId',
-          sortable: true,
-          width: '100',
           showTooltip: true,
           show: true
         }
@@ -144,7 +111,7 @@ export default {
     getList() {
       this.listLoading = true
       this.listQuery.skipCount = (this.listQuery.page - 1) * this.listQuery.maxResultCount
-      store.getStores(this.listQuery).then(response => {
+      shopStore.getStores(this.listQuery).then(response => {
         this.tableData = response
         this.listLoading = false
       }).catch(() => {
@@ -167,10 +134,10 @@ export default {
     handleCommand(command) {
       switch (command.type) {
         case 'view':
-          this.$refs.view.show(command.row.id, command.row.orderNumber)
+          this.$refs.view.show(command.row.id, command.row.name)
           break
         case 'edit':
-          this.$refs.edit.edit(command.row.id, command.row.orderNumber)
+          this.$refs.edit.edit(command.row.id, command.row.name)
           break
         case 'del':
           this.$confirm('此操作将永久删除数据, 是否继续?', '提示', {
@@ -178,13 +145,9 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            store.deleteStore(command.row.id).then((result) => {
-              if (result.success) {
-                this.getList()
-                this.$message.success('删除成功')
-              } else {
-                this.$message.error(result.error.details)
-              }
+            shopStore.deleteStore(command.row.id).then((result) => {
+              this.getList()
+              this.$message.success('删除成功')
             }).catch(() => {})
           }).catch(() => {})
           break

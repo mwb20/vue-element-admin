@@ -152,8 +152,11 @@ export default {
       const pid = tree.id
       this.treeMap.set(pid, { tree, treeNode, resolve })
       category.getCategorys({ parentId: pid }).then(response => {
+        if (response.totalCount === 0) {
+          this.$message.warning('没有下级了')
+        }
         for (let i = 0, len = response.items.length; i < len; i++) {
-          response.items[i].hasChildren = response.items[i].children.length > 0
+          response.items[i].hasChildren = true// response.items[i].children.length > 0
         }
         resolve(response.items)
       })
@@ -163,7 +166,7 @@ export default {
       this.listQuery.skipCount = (this.listQuery.page - 1) * this.listQuery.maxResultCount
       category.getCategorys(this.listQuery).then(response => {
         for (let i = 0, len = response.items.length; i < len; i++) {
-          response.items[i].hasChildren = response.items[i].children.length > 0
+          response.items[i].hasChildren = true// response.items[i].children.length > 0
         }
         this.tableData = response
         this.listLoading = false

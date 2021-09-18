@@ -97,7 +97,7 @@ export default {
       cols: [
         {
           key: 'paymentId',
-          label: 'PaymentId',
+          label: '支付Id',
           sortable: true,
           width: '100',
           showTooltip: true,

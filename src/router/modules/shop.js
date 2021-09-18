@@ -10,7 +10,7 @@ export const orderModule = {
     {
       path: 'orders',
       component: () => import('@/views/shop/orders/index'),
-      name: 'Orders',
+      name: 'ShopOrder',
       meta: { permissions: ['EasyAbp.EShop.Orders.Order'], title: '订单', icon: 'dictionary', noCache: false }
     }
   ]
@@ -27,12 +27,12 @@ export const productModule = {
       path: 'products',
       component: () => import('@/views/shop/products/index'),
       name: 'Products',
-      meta: { permissions: ['EasyAbp.EShop.Products.Product'], title: '商品', icon: 'dictionary', noCache: false }
+      meta: { permissions: ['EasyAbp.EShop.Products.Product'], title: '商品', icon: 'dictionary', noCache: true }
     },
     {
       path: 'categories',
       component: () => import('@/views/shop/categories/index'),
-      name: 'Categories',
+      name: 'ProductsCategories',
       meta: { permissions: ['EasyAbp.EShop.Products.Category'], title: '商品类别', icon: 'dictionary', noCache: false }
     }
   ]
@@ -54,8 +54,8 @@ export const storeModule = {
     {
       path: 'transactions',
       component: () => import('@/views/shop/stores_transactions/index'),
-      name: 'Transactions',
-      meta: { permissions: ['EasyAbp.EShop.Stores.Transaction'], title: '交易记录', icon: 'dictionary', noCache: false }
+      name: 'StoresTransactions',
+      meta: { permissions: ['EasyAbp.EShop.Stores.Transaction'], title: '交易记录', icon: 'dictionary', noCache: true }
     },
     {
       path: 'storeOwners',
@@ -71,7 +71,7 @@ export const basketItemsModule = {
   component: Layout,
   redirect: '/basket/items',
   name: 'EshopManageBasketsItems',
-  meta: { title: '购物车', icon: 'component', noCache: true },
+  meta: { title: '购物车管理', icon: 'component', noCache: true },
   children: [
     {
       path: 'items',
@@ -87,7 +87,7 @@ export const couponsModule = {
   component: Layout,
   redirect: '/coupon/coupons',
   name: 'EshopManageCoupons',
-  meta: { title: '购物车', icon: 'component', noCache: true },
+  meta: { title: '优惠券管理', icon: 'component', noCache: true },
   children: [
     {
       path: 'coupons',
@@ -130,19 +130,19 @@ export const weChatPaymentsModule = {
   path: '/weChatPayment',
   component: Layout,
   redirect: '/weChatPayment/payments',
-  name: 'EshopManagePayment',
+  name: 'EshopManageWeChatPayment',
   meta: { title: '微信支付', icon: 'component', noCache: true },
   children: [
     {
-      path: 'payments',
+      path: 'weChatpayments',
       component: () => import('@/views/shop/wechat_payment/index'),
-      name: 'Payments',
+      name: 'WeChatPayments',
       meta: { permissions: ['EasyAbp.PaymentService.WeChatPay.PaymentRecord'], title: '支付记录', icon: 'dictionary', noCache: false }
     },
     {
-      path: 'refunds',
+      path: 'weChatrefunds',
       component: () => import('@/views/shop/wechat_refund/index'),
-      name: 'Refunds',
+      name: 'WeChatRefunds',
       meta: { permissions: ['EasyAbp.PaymentService.WeChatPay.RefundRecord'], title: '退款记录', icon: 'dictionary', noCache: false }
     }
   ]

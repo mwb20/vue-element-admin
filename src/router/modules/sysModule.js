@@ -30,6 +30,12 @@ const systemModule = {
       component: () => import('@/views/system_manage/users/index'),
       name: 'Users',
       meta: { permissions: ['AbpIdentity.Users'], title: '用户', icon: 'user', noCache: false }
+    },
+    {
+      path: 'upload-files',
+      component: () => import('@/views/system_manage/upload_download/index'),
+      name: 'UploadFiles',
+      meta: { permissions: ['UploadDownload.UploadFile'], title: '上传文件管理', icon: 'el-icon-folder', noCache: false }
     }
   ]
 }

@@ -1,75 +1,69 @@
 ﻿<template>
-  <div class="tools-table">
-    <div class="tools-container right-align">
-      <el-button type="primary" size="small" @click="$refs.edit.created()"><i class="el-icon-plus" />新增</el-button>
+  <div class="app-container">
+    <div class="filter-container" @keydown.enter="listQuery.page=1,getList()">
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <label class="title">搜索</label>
+          <el-input v-model="listQuery.filter" placeholder="请输入搜索内容" class="input-with-select" size="small">
+            <el-button slot="append" icon="el-icon-search" @click="listQuery.page=1,getList()" />
+          </el-input>
+        </el-col>
+        <el-col :span="12" style="padding-right:15px;text-align:right;">
+          <label class="title" />
+          <el-popover
+            placement="right"
+            width="160"
+            trigger="click"
+          >
+            <div>
+              <el-checkbox v-for="col in cols" :key="col.key" v-model="col.show" :label="col.label" @change="tableKey++" />
+            </div>
+            <el-button slot="reference" icon="el-icon-s-operation" circle />
+          </el-popover>
+        </el-col>
+      </el-row>
     </div>
-    <div class="app-container">
-      <div class="filter-container" @keydown.enter="listQuery.page=1,getList()">
-        <el-row :gutter="10">
-          <el-col :span="12">
-            <label class="title">搜索</label>
-            <el-input v-model="listQuery.filter" placeholder="请输入搜索内容" class="input-with-select" size="small">
-              <el-button slot="append" icon="el-icon-search" @click="listQuery.page=1,getList()" />
-            </el-input>
-          </el-col>
-          <el-col :span="12" style="padding-right:15px;text-align:right;">
-            <label class="title" />
-            <el-popover
-              placement="right"
-              width="160"
-              trigger="click"
-            >
-              <div>
-                <el-checkbox v-for="col in cols" :key="col.key" v-model="col.show" :label="col.label" @change="tableKey++" />
-              </div>
-              <el-button slot="reference" icon="el-icon-s-operation" circle />
-            </el-popover>
-          </el-col>
-        </el-row>
-      </div>
-      <el-table
-        :key="tableKey"
-        v-loading="listLoading"
-        :data="tableData.items"
-        tooltip-effect="dark"
-        border
-        @sort-change="sortingChange"
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="tableData.items"
+      tooltip-effect="dark"
+      border
+      @sort-change="sortingChange"
+    >
+      <el-table-column
+        v-for="col in cols.filter(c=>c.show)"
+        :key="col.key"
+        :prop="col.key"
+        :label="col.label"
+        :sortable="col.sortable"
+        :width="col.width"
+        :show-overflow-tooltip="col.showTooltip"
       >
-        <el-table-column
-          v-for="col in cols.filter(c=>c.show)"
-          :key="col.key"
-          :prop="col.key"
-          :label="col.label"
-          :sortable="col.sortable"
-          :width="col.width"
-          :show-overflow-tooltip="col.showTooltip"
-        >
-          <template slot-scope="scope">
-            <span v-html="col.formatter ? col.formatter(scope.row[col.key]) : scope.row[col.key]" />
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="120"
-          label="操作"
-        >
-          <template slot-scope="scope">
-            <el-dropdown size="medium" type="primary" trigger="click" @command="handleCommand">
-              <el-button type="primary" size="small">
-                <i class="el-icon-setting" />操作<i class="el-icon-arrow-down el-icon--right" />
-              </el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="{type:'view',row:scope.row}"><i class="el-icon-view" />查看</el-dropdown-item>
-                <el-dropdown-item :command="{type:'edit',row:scope.row}"><i class="el-icon-edit" />编辑</el-dropdown-item>
-                <el-dropdown-item :command="{type:'del',row:scope.row}"><i class="el-icon-delete" />删除</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination v-show="tableData.totalCount>0" :total="tableData.totalCount" :page.sync="listQuery.page" :limit.sync="listQuery.maxResultCount" @pagination="getList" />
-      <data-view ref="view" />
-      <data-edit ref="edit" @save-success="getList" />
-    </div>
+        <template slot-scope="scope">
+          <span v-html="col.formatter ? col.formatter(scope.row[col.key]) : scope.row[col.key]" />
+        </template>
+      </el-table-column>
+      <el-table-column
+        width="120"
+        label="操作"
+      >
+        <template slot-scope="scope">
+          <el-dropdown size="medium" type="primary" trigger="click" @command="handleCommand">
+            <el-button type="primary" size="small">
+              <i class="el-icon-setting" />操作<i class="el-icon-arrow-down el-icon--right" />
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :command="{type:'view',row:scope.row}"><i class="el-icon-view" />查看</el-dropdown-item>
+              <el-dropdown-item :command="{type:'del',row:scope.row}"><i class="el-icon-delete" />删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination v-show="tableData.totalCount>0" :total="tableData.totalCount" :page.sync="listQuery.page" :limit.sync="listQuery.maxResultCount" @pagination="getList" />
+    <data-view ref="view" />
+    <data-edit ref="edit" @save-success="getList" />
   </div>
 </template>
 <script>
@@ -98,39 +92,15 @@ export default {
       cols: [
         {
           key: 'basketName',
-          label: 'BasketName',
+          label: '购物车名',
           sortable: true,
-          width: '100',
+          width: '130',
           showTooltip: true,
           show: true
         },
         {
           key: 'userId',
-          label: 'UserId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'storeId',
-          label: 'StoreId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'productId',
-          label: 'ProductId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'productSkuId',
-          label: 'ProductSkuId',
+          label: '用户',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -138,15 +108,7 @@ export default {
         },
         {
           key: 'quantity',
-          label: 'Quantity',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'mediaResources',
-          label: 'MediaResources',
+          label: '数量',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -154,23 +116,23 @@ export default {
         },
         {
           key: 'productUniqueName',
-          label: 'ProductUniqueName',
+          label: '商品编码',
           sortable: true,
-          width: '100',
+          width: '130',
           showTooltip: true,
           show: true
         },
         {
           key: 'productDisplayName',
-          label: 'ProductDisplayName',
+          label: '商品名',
           sortable: true,
-          width: '100',
+          width: '160',
           showTooltip: true,
           show: true
         },
         {
           key: 'skuName',
-          label: 'SkuName',
+          label: 'Sku',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -178,15 +140,15 @@ export default {
         },
         {
           key: 'skuDescription',
-          label: 'SkuDescription',
+          label: 'Sku描述',
           sortable: true,
-          width: '100',
+          width: '130',
           showTooltip: true,
           show: true
         },
         {
           key: 'currency',
-          label: 'Currency',
+          label: '货币',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -194,7 +156,7 @@ export default {
         },
         {
           key: 'unitPrice',
-          label: 'UnitPrice',
+          label: '单价',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -202,7 +164,7 @@ export default {
         },
         {
           key: 'totalPrice',
-          label: 'TotalPrice',
+          label: '总价',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -210,7 +172,7 @@ export default {
         },
         {
           key: 'totalDiscount',
-          label: 'TotalDiscount',
+          label: '折扣',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -218,7 +180,7 @@ export default {
         },
         {
           key: 'inventory',
-          label: 'Inventory',
+          label: '库存',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -226,33 +188,9 @@ export default {
         },
         {
           key: 'isInvalid',
-          label: 'IsInvalid',
+          label: '是否失效',
           sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'extraProperties',
-          label: 'ExtraProperties',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'creatorId',
-          label: 'CreatorId',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'lastModifierId',
-          label: 'LastModifierId',
-          sortable: true,
-          width: '100',
+          width: '130',
           showTooltip: true,
           show: true
         }
@@ -290,9 +228,6 @@ export default {
       switch (command.type) {
         case 'view':
           this.$refs.view.show(command.row.id, command.row.orderNumber)
-          break
-        case 'edit':
-          this.$refs.edit.edit(command.row.id, command.row.orderNumber)
           break
         case 'del':
           this.$confirm('此操作将永久删除数据, 是否继续?', '提示', {

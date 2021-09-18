@@ -1,40 +1,43 @@
 ﻿<template>
-  <el-dialog :title="title" :visible.sync="dialogVisible" :close-on-click-modal="false" @closed="closeHandle">
-    <el-form ref="editForm" :model="editForm" status-icon label-width="100px" class="lable-same-line">
-      <el-form-item label="StoreId" prop="storeId" verify>
-        <el-input v-model="editForm.storeId" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="OwnerUserId" prop="ownerUserId" verify>
-        <el-input v-model="editForm.ownerUserId" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="ExtraProperties" prop="extraProperties" verify>
-        <el-input v-model="editForm.extraProperties" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="ConcurrencyStamp" prop="concurrencyStamp" verify>
-        <el-input v-model="editForm.concurrencyStamp" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="CreatorId" prop="creatorId" verify>
-        <el-input v-model="editForm.creatorId" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="LastModifierId" prop="lastModifierId" verify>
-        <el-input v-model="editForm.lastModifierId" autocomplete="off" />
-      </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="editSave">确 定</el-button>
-    </div>
-  </el-dialog>
+  <div>
+    <el-dialog :title="title" :visible.sync="dialogVisible" :close-on-click-modal="false" @closed="closeHandle">
+      <el-form ref="editForm" :model="editForm" status-icon label-width="100px" class="lable-same-line">
+        <el-form-item label="用户" prop="ownerUserName" verify>
+          <el-input v-model="editForm.ownerUserName" autocomplete="off" @focus="$refs.selectUserRef.show()" />
+          <input v-model="editForm.ownerUserId" type="hidden">
+        </el-form-item>
+        <el-form-item label="店铺" prop="storeName" verify>
+          <el-input v-model="editForm.storeName" autocomplete="off" @focus="$refs.selectStoreRef.show()" />
+          <input v-model="editForm.storeId" type="hidden">
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editSave">确 定</el-button>
+      </div>
+    </el-dialog>
+    <select-user ref="selectUserRef" @selection="selectionUserEvent" />
+    <select-store ref="selectStoreRef" @selection="selectionStoreEvent" />
+  </div>
 </template>
 <script>
 import { storeOwner } from '@/api/module/eshop'
 export default {
   name: 'StoresStoreOwnersEdit',
+  components: {
+    SelectStore: () => import('@/views/shop/stores/select_store.vue'),
+    SelectUser: () => import('@/views/system_manage/users/select_user.vue')
+  },
   data() {
     return {
       title: '新增',
       dialogVisible: false,
-      editForm: { }
+      editForm: {
+        storeName: null,
+        storeId: null,
+        ownerUserName: null,
+        ownerUserId: null
+      }
     }
   },
   methods: {
@@ -94,6 +97,14 @@ export default {
     created() {
       // 显示dialog
       this.dialogVisible = true
+    },
+    selectionUserEvent(userInfo) {
+      this.editForm.ownerUserName = userInfo.userName
+      this.editForm.ownerUserId = userInfo.id
+    },
+    selectionStoreEvent(storeInfo) {
+      this.editForm.storeName = storeInfo.name
+      this.editForm.storeId = storeInfo.id
     }
   }
 }

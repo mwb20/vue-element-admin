@@ -173,3 +173,30 @@ label.title{
     width: 100% !important;
 }
 //-------------------
+/*商品编辑页面的样式*/
+.product-attribute-tab{
+    .el-icon-arrow-up,.el-select-dropdown{
+        display: none;
+      }
+      .el-card__body{
+        padding: 5px 5px 0px 5px;
+      }
+      .product-attribute-item{
+        padding-top: 8px;
+      }
+      .attribute-remove{
+        float: right;
+        margin-left: -10px;
+        margin-top: -8px;
+        font-size: 18px;
+        color: #afb2b9;
+        cursor: pointer;
+      }
+      .attribute-remove:hover{
+          color: #909399;
+      }
+      .el-card__body .el-form-item{
+        margin-bottom: 5px;
+      }
+}
+  /*./商品编辑页面的样式*/

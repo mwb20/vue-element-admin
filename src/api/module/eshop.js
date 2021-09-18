@@ -49,40 +49,47 @@ export const basketItem = {
 export const category = {
   getCategory: function(id) {
     return request({
-      url: '/api/eShop/products/category/' + id,
+      url: '/api/e-shop/products/category/' + id,
       method: 'get'
     })
   },
   updateCategory: function({ id, extraProperties, parentId, uniqueName, displayName, description, mediaResources }) {
     return request({
-      url: '/api/eShop/products/category/' + id,
+      url: '/api/e-shop/products/category/' + id,
       method: 'put',
       data: { extraProperties, parentId, uniqueName, displayName, description, mediaResources }
     })
   },
   deleteCategory: function(id) {
     return request({
-      url: '/api/eShop/products/category/' + id,
+      url: '/api/e-shop/products/category/' + id,
       method: 'delete'
     })
   },
-  getCategorys: function({ parentId, showHidden, sorting, skipCount, maxResultCount }) {
+  getCategorys: function({ parentId, filter, showHidden, sorting, skipCount, maxResultCount }) {
     return request({
-      url: '/api/eShop/products/category',
+      url: '/api/e-shop/products/category',
       method: 'get',
-      params: { parentId, showHidden, sorting, skipCount, maxResultCount }
+      params: { parentId, filter, showHidden, sorting, skipCount, maxResultCount }
+    })
+  },
+  trees: function(parentId) {
+    return request({
+      url: '/api/e-shop/products/category/trees',
+      method: 'get',
+      params: { parentId }
     })
   },
   createCategory: function({ extraProperties, parentId, uniqueName, displayName, description, mediaResources }) {
     return request({
-      url: '/api/eShop/products/category',
+      url: '/api/e-shop/products/category',
       method: 'post',
       data: { extraProperties, parentId, uniqueName, displayName, description, mediaResources }
     })
   },
   getSummarys: function({ parentId, showHidden, sorting, skipCount, maxResultCount }) {
     return request({
-      url: '/api/eShop/products/category/summary',
+      url: '/api/e-shop/products/category/summary',
       method: 'get',
       params: { parentId, showHidden, sorting, skipCount, maxResultCount }
     })
@@ -295,18 +302,18 @@ export const product = {
       params: { storeId, categoryId, showHidden, sorting, skipCount, maxResultCount }
     })
   },
-  createProduct: function({ extraProperties, storeId, productGroupName, productDetailId, categoryIds, uniqueName, displayName, productAttributes, inventoryStrategy, displayOrder, mediaResources, isPublished }) {
+  createProduct: function({ extraProperties, storeId, productGroupName, productDetailId, categoryIds, uniqueName, displayName, productAttributes, inventoryStrategy, displayOrder, mediaResources, isPublished, description }) {
     return request({
       url: '/api/e-shop/products/product',
       method: 'post',
-      data: { extraProperties, storeId, productGroupName, productDetailId, categoryIds, uniqueName, displayName, productAttributes, inventoryStrategy, displayOrder, mediaResources, isPublished }
+      data: { extraProperties, storeId, productGroupName, productDetailId, categoryIds, uniqueName, displayName, productAttributes, inventoryStrategy, displayOrder, mediaResources, isPublished, description }
     })
   },
-  updateProduct: function({ id, extraProperties, storeId, productGroupName, productDetailId, categoryIds, uniqueName, displayName, productAttributes, inventoryStrategy, displayOrder, mediaResources, isPublished }) {
+  updateProduct: function({ id, extraProperties, storeId, productGroupName, productDetailId, categoryIds, uniqueName, displayName, productAttributes, inventoryStrategy, displayOrder, mediaResources, isPublished, description }) {
     return request({
       url: '/api/e-shop/products/product/' + id,
       method: 'put',
-      data: { extraProperties, storeId, productGroupName, productDetailId, categoryIds, uniqueName, displayName, productAttributes, inventoryStrategy, displayOrder, mediaResources, isPublished }
+      data: { extraProperties, storeId, productGroupName, productDetailId, categoryIds, uniqueName, displayName, productAttributes, inventoryStrategy, displayOrder, mediaResources, isPublished, description }
     })
   },
   deleteProduct: function(id) {
@@ -533,7 +540,7 @@ export const refundRecord = {
   }
 }
 
-export const store = {
+export const shopStore = {
   getStore: function(id) {
     return request({
       url: '/api/e-shop/stores/store/' + id,
@@ -553,11 +560,11 @@ export const store = {
       method: 'delete'
     })
   },
-  getStores: function({ onlyManageable, sorting, skipCount, maxResultCount }) {
+  getStores: function({ onlyManageable, filter, sorting, skipCount, maxResultCount }) {
     return request({
       url: '/api/e-shop/stores/store',
       method: 'get',
-      params: { onlyManageable, sorting, skipCount, maxResultCount }
+      params: { onlyManageable, filter, sorting, skipCount, maxResultCount }
     })
   },
   createStore: function({ extraProperties, name }) {

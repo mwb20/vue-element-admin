@@ -88,7 +88,7 @@ import { order } from '@/api/module/eshop'
 import { parseTime } from '@/utils'
 
 export default {
-  name: 'Order',
+  name: 'ShopOrder',
   components: {
     Pagination: () => import('@/components/Pagination'),
     DataView: () => import('./view'),
@@ -112,7 +112,7 @@ export default {
           key: 'orderNumber',
           label: '订单号',
           sortable: true,
-          width: '100',
+          width: 100,
           showTooltip: true,
           show: true
         },
@@ -120,7 +120,7 @@ export default {
           key: 'orderStatus',
           label: '状态',
           sortable: true,
-          width: '80',
+          width: 80,
           showTooltip: true,
           formatter: this.formatStatus,
           show: true
@@ -129,7 +129,7 @@ export default {
           key: 'productTotalPrice',
           label: '总价',
           sortable: true,
-          width: '80',
+          width: 80,
           showTooltip: true,
           show: true
         },
@@ -137,7 +137,7 @@ export default {
           key: 'totalDiscount',
           label: '优惠金额',
           sortable: true,
-          width: '120',
+          width: 120,
           showTooltip: true,
           show: true
         },
@@ -145,7 +145,7 @@ export default {
           key: 'totalPrice',
           label: '总金额',
           sortable: true,
-          width: '100',
+          width: 100,
           showTooltip: true,
           show: true
         },
@@ -153,7 +153,7 @@ export default {
           key: 'actualTotalPrice',
           label: '实付金额',
           sortable: true,
-          width: '120',
+          width: 120,
           showTooltip: true,
           show: true
         },
@@ -161,7 +161,7 @@ export default {
           key: 'refundAmount',
           label: '退款金额',
           sortable: true,
-          width: '120',
+          width: 120,
           showTooltip: true,
           show: true
         },
@@ -169,7 +169,7 @@ export default {
           key: 'customerRemark',
           label: '客户备注',
           sortable: true,
-          width: '120',
+          width: 120,
           showTooltip: true,
           show: true
         },
@@ -177,7 +177,7 @@ export default {
           key: 'staffRemark',
           label: '备注',
           sortable: true,
-          width: '120',
+          width: 120,
           showTooltip: true,
           show: true
         },
@@ -185,7 +185,7 @@ export default {
           key: 'paidTime',
           label: '支付时间',
           sortable: true,
-          width: '120',
+          width: 120,
           showTooltip: true,
           formatter: this.formatDate,
           show: true
@@ -194,7 +194,7 @@ export default {
           key: 'completionTime',
           label: '完成时间',
           sortable: true,
-          width: '120',
+          width: 120,
           showTooltip: true,
           formatter: this.formatDate,
           show: true
@@ -203,7 +203,7 @@ export default {
           key: 'canceledTime',
           label: '取消时间',
           sortable: true,
-          width: '120',
+          width: 120,
           showTooltip: true,
           formatter: this.formatDate,
           show: true
@@ -212,7 +212,7 @@ export default {
           key: 'cancellationReason',
           label: '取消原因',
           sortable: true,
-          width: '120',
+          width: 120,
           showTooltip: true,
           show: true
         },
@@ -220,7 +220,7 @@ export default {
           key: 'creationTime',
           label: '创建时间',
           sortable: false,
-          width: '120',
+          width: 120,
           formatter: this.formatDate,
           showTooltip: true,
           show: true

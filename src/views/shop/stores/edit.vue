@@ -1,23 +1,8 @@
 ﻿<template>
   <el-dialog :title="title" :visible.sync="dialogVisible" :close-on-click-modal="false" @closed="closeHandle">
     <el-form ref="editForm" :model="editForm" status-icon label-width="100px" class="lable-same-line">
-      <el-form-item label="Name" prop="name" verify>
+      <el-form-item label="店铺名称" prop="name" verify>
         <el-input v-model="editForm.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="ExtraProperties" prop="extraProperties" verify>
-        <el-input v-model="editForm.extraProperties" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="ConcurrencyStamp" prop="concurrencyStamp" verify>
-        <el-input v-model="editForm.concurrencyStamp" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="CreatorId" prop="creatorId" verify>
-        <el-input v-model="editForm.creatorId" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="LastModifierId" prop="lastModifierId" verify>
-        <el-input v-model="editForm.lastModifierId" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="DeleterId" prop="deleterId" verify>
-        <el-input v-model="editForm.deleterId" autocomplete="off" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -27,7 +12,7 @@
   </el-dialog>
 </template>
 <script>
-import { store } from '@/api/module/eshop'
+import { shopStore } from '@/api/module/eshop'
 export default {
   name: 'StoresEdit',
   data() {
@@ -40,7 +25,7 @@ export default {
   methods: {
     loadData(id) {
       const loading = this.$loading()
-      store.getStore(id).then((result) => {
+      shopStore.getStore(id).then((result) => {
         loading.close()
         // 显示dialog
         this.dialogVisible = true
@@ -57,7 +42,7 @@ export default {
           const loading = this.$loading()
           // id有值执行更新方法
           if (this.editForm.id !== undefined) {
-            store.updateStore(this.editForm)
+            shopStore.updateStore(this.editForm)
               .then((result) => {
                 loading.close()
                 this.$emit('save-success')
@@ -67,7 +52,7 @@ export default {
                 loading.close()
               })
           } else {
-            store.createStore(this.editForm)
+            shopStore.createStore(this.editForm)
               .then((result) => {
                 loading.close()
                 this.$emit('save-success')

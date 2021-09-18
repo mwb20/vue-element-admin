@@ -97,7 +97,7 @@ export default {
       cols: [
         {
           key: 'paymentId',
-          label: 'PaymentId',
+          label: '支付Id',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -137,7 +137,7 @@ export default {
         },
         {
           key: 'deviceInfo',
-          label: 'DeviceInfo',
+          label: '设备信息',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -145,7 +145,7 @@ export default {
         },
         {
           key: 'resultCode',
-          label: 'ResultCode',
+          label: '结果码',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -177,7 +177,7 @@ export default {
         },
         {
           key: 'isSubscribe',
-          label: 'IsSubscribe',
+          label: '是否订阅',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -185,7 +185,7 @@ export default {
         },
         {
           key: 'tradeType',
-          label: 'TradeType',
+          label: '交易类型',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -193,7 +193,7 @@ export default {
         },
         {
           key: 'bankType',
-          label: 'BankType',
+          label: '银行类型',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -201,7 +201,7 @@ export default {
         },
         {
           key: 'totalFee',
-          label: 'TotalFee',
+          label: '总费用',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -209,7 +209,7 @@ export default {
         },
         {
           key: 'settlementTotalFee',
-          label: 'SettlementTotalFee',
+          label: '结算总费用',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -217,7 +217,7 @@ export default {
         },
         {
           key: 'feeType',
-          label: 'FeeType',
+          label: '费用类型',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -225,7 +225,7 @@ export default {
         },
         {
           key: 'cashFee',
-          label: 'CashFee',
+          label: '现金',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -233,7 +233,7 @@ export default {
         },
         {
           key: 'cashFeeType',
-          label: 'CashFeeType',
+          label: '现金类型',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -241,7 +241,7 @@ export default {
         },
         {
           key: 'couponFee',
-          label: 'CouponFee',
+          label: '总优惠',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -249,7 +249,7 @@ export default {
         },
         {
           key: 'couponCount',
-          label: 'CouponCount',
+          label: '优惠券数',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -257,7 +257,7 @@ export default {
         },
         {
           key: 'couponTypes',
-          label: 'CouponTypes',
+          label: '优惠券类型',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -265,7 +265,7 @@ export default {
         },
         {
           key: 'couponIds',
-          label: 'CouponIds',
+          label: '优惠券Id',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -273,7 +273,7 @@ export default {
         },
         {
           key: 'couponFees',
-          label: 'CouponFees',
+          label: '优惠额',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -281,7 +281,7 @@ export default {
         },
         {
           key: 'transactionId',
-          label: 'TransactionId',
+          label: '交易Id',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -289,7 +289,7 @@ export default {
         },
         {
           key: 'outTradeNo',
-          label: 'OutTradeNo',
+          label: '流水号',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -297,7 +297,7 @@ export default {
         },
         {
           key: 'attach',
-          label: 'Attach',
+          label: '属性',
           sortable: true,
           width: '100',
           showTooltip: true,
@@ -305,23 +305,7 @@ export default {
         },
         {
           key: 'timeEnd',
-          label: 'TimeEnd',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'extraProperties',
-          label: 'ExtraProperties',
-          sortable: true,
-          width: '100',
-          showTooltip: true,
-          show: true
-        },
-        {
-          key: 'creatorId',
-          label: 'CreatorId',
+          label: '终止时间',
           sortable: true,
           width: '100',
           showTooltip: true,

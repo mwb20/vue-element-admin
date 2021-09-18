@@ -26,7 +26,7 @@
   </el-dialog>
 </template>
 <script>
-import { store } from '@/api/module/eshop'
+import { shopStore } from '@/api/module/eshop'
 export default {
   name: 'StoresView',
   data() {
@@ -38,7 +38,7 @@ export default {
   methods: {
     loadData(id) {
       const loading = this.$loading()
-      store.getStore(id).then((response) => {
+      shopStore.getStore(id).then((response) => {
         loading.close()
         this.viewData = response
         // 显示dialog
