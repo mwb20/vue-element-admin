@@ -1,16 +1,8 @@
-import axios from 'axios'
-import store from '@/store'
-import { Message } from 'element-ui'
+import request from '@/utils/request-auth'
 
-export async function login(data) {
-  const headers = {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }
-  if (store.getters.currentTenant.id) {
-    headers['__tenant'] = store.getters.currentTenant.id
-  }
-  return axios({
-    url: `${process.env.VUE_APP_Auth_API}connect/token`,
+export function login(data) {
+  return request({
+    url: 'connect/token',
     method: 'POST',
     data: data,
     transformRequest: [function(data) {
@@ -23,27 +15,15 @@ export async function login(data) {
       }
       return ret
     }],
-    headers: headers
-  }).catch(errorHandler)
-}
-
-export async function logout() {
-  return axios({
-    url: `${process.env.VUE_APP_Auth_API}api/account/logout`,
-    method: 'get'
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
   })
 }
 
-function errorHandler(err) {
-  let msg
-  if (err.response && err.response.data && err.response.data.error) {
-    msg = err.response.data.error
-  } else {
-    msg = err
-  }
-  Message({
-    message: msg,
-    type: 'error',
-    duration: 5 * 1000
+export function logout() {
+  return request({
+    url: 'api/account/logout',
+    method: 'get'
   })
 }
