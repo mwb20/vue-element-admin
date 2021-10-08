@@ -68,6 +68,7 @@
 </template>
 <script>
 import { basketItem } from '@/api/module/eshop'
+import { user } from '@/api/abpFramework'
 
 export default {
   name: 'BasketItems',
@@ -104,6 +105,7 @@ export default {
           sortable: true,
           width: '100',
           showTooltip: true,
+          formatter: this.formatUser,
           show: true
         },
         {
@@ -246,6 +248,13 @@ export default {
           }).catch(() => {})
           break
       }
+    },
+    async formatUser(cellValue) {
+      let userInfo
+      await user.getUser(cellValue).then(res => {
+        userInfo = res
+      })
+      return userInfo.name
     }
   }
 }
