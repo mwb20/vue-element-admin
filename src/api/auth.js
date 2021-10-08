@@ -1,14 +1,8 @@
-import axios from 'axios'
-import store from '@/store'
+import request from '@/utils/request-auth'
+
 export function login(data) {
-  const headers = {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }
-  if (store.getters.currentTenant.id) {
-    headers['__tenant'] = store.getters.currentTenant.id
-  }
-  return axios({
-    url: `${process.env.VUE_APP_Auth_API}connect/token`,
+  return request({
+    url: 'connect/token',
     method: 'POST',
     data: data,
     transformRequest: [function(data) {
@@ -21,13 +15,15 @@ export function login(data) {
       }
       return ret
     }],
-    headers: headers
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
   })
 }
 
 export function logout() {
-  return axios({
-    url: `${process.env.VUE_APP_Auth_API}api/account/logout`,
+  return request({
+    url: 'api/account/logout',
     method: 'get'
   })
 }

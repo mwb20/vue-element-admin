@@ -27,7 +27,7 @@
         />
         <el-table-column
           prop="name"
-          label="名字"
+          label="姓名"
           show-overflow-tooltip
         />
         <el-table-column

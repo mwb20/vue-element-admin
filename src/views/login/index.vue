@@ -115,10 +115,10 @@ export default {
       showSwitchTenant: false,
       loginForm: {
         grant_type: 'password',
-        scope: 'Erp',
+        scope: 'FastMall',
         username: 'admin',
         password: '1q2w3E*',
-        client_id: 'Erp_App',
+        client_id: 'FastMall_App',
         client_secret: '1q2w3e*'
       },
       loginRules: {
