@@ -53,12 +53,12 @@ const actions = {
       abpApplicationConfiguration.getApplicationConfiguration().then(response => {
         const { auth } = response
         if (!auth) {
-          reject('Verification failed, please Login again.')
+          reject('验证失败，请重新登录。')
         }
 
         // 认证数组不能为空
-        if (!auth.grantedPolicies || auth.grantedPolicies.length <= 0) {
-          reject('getInfo: auth must be a non-null array!')
+        if (!auth.grantedPolicies || Object.keys(auth.grantedPolicies).length <= 0) {
+          reject('验证失败，你没有任何权限!')
         }
         const permissions = []
         for (const key in auth.grantedPolicies) {
