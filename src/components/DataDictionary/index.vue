@@ -2,7 +2,7 @@
   <el-cascader :value="value" :props="cascaderProps" @change="selectChange" />
 </template>
 <script>
-import { commonDictionaries } from '@/api/abpFramework'
+import { dictionaries } from '@/api/module/dataDictionary'
 
 export default {
   name: 'DataDictionaryComponent',
@@ -31,8 +31,8 @@ export default {
         lazy: true,
         lazyLoad(node, resolve) {
           const p_code = node.level === 0 ? topCode : node.data.code
-          commonDictionaries.getTree(p_code).then(response => {
-            const nodes = Array.from(response.result)
+          dictionaries.getTree(p_code).then(response => {
+            const nodes = Array.from(response)
               .map(item => ({
                 code: item.code,
                 value: item.value,
