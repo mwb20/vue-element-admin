@@ -98,6 +98,7 @@ export default {
       this.loadData(id)
     },
     created() {
+      this.title = '创建'
       this.isCreated = true
       // 显示dialog
       this.dialogVisible = true
