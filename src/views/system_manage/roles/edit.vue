@@ -85,6 +85,7 @@ export default {
     },
     created() {
       // 显示dialog
+      this.title = '创建'
       this.dialogVisible = true
     }
   }
