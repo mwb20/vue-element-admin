@@ -86,6 +86,7 @@ export default {
       })
     },
     closeHandle() {
+      this.parentName = undefined
       this.editForm = { isActive: true, sort: 0 }
       if (this.$refs['editForm']) {
         this.$refs['editForm'].resetFields()
