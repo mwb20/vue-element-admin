@@ -14,6 +14,12 @@ const systemModule = {
       meta: { permissions: ['DataDictionary.DataDictionaries'], title: '数据字典', icon: 'dictionary', noCache: false }
     },
     {
+      path: 'upload-files',
+      component: () => import('@/views/system_manage/upload_download/index'),
+      name: 'UploadFiles',
+      meta: { permissions: ['UploadDownload.UploadFile'], title: '上传文件管理', icon: 'el-icon-folder', noCache: false }
+    },
+    {
       path: 'tenants',
       component: () => import('@/views/system_manage/tenants/index'),
       name: 'Tenants',
