@@ -5,7 +5,7 @@
         <el-input v-model="editForm.parentId" />
       </el-form-item>
       <el-form-item v-show="parentName!==undefined" label="父节点">
-        <el-input v-model="parentName" autocomplete="off" readonly="readonly" />
+        <el-input v-model="parentName" disabled autocomplete="off" />
       </el-form-item>
       <el-form-item label="编码" prop="code" verify>
         <el-input v-model="editForm.code" autocomplete="off" />
@@ -86,6 +86,7 @@ export default {
       })
     },
     closeHandle() {
+      this.parentName = undefined
       this.editForm = { isActive: true, sort: 0 }
       if (this.$refs['editForm']) {
         this.$refs['editForm'].resetFields()
