@@ -14,8 +14,8 @@ export default function filePickerCallback(callback, value, meta) {
     formData.append('Content', file, file.name)
     formData.append('FileType', file.type)
     formData.append('FileName', file.name)
-    uploadDownloads.upload(formData).then((data) => {
-      callback(process.env.VUE_APP_BASE_API + data, { title: file.name })
+    uploadDownloads.upload(formData).then((res) => {
+      callback(process.env.VUE_APP_BASE_API + res.url, { title: file.name })
     })
   }
   // 触发点击
