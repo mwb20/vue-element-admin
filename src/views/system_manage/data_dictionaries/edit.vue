@@ -38,7 +38,7 @@ export default {
   name: 'DataDictionariesEdit',
   data() {
     return {
-      title: '新增',
+      title: null,
       parentName: undefined,
       dialogVisible: false,
       editForm: { isActive: true, sort: 0 }
@@ -86,6 +86,7 @@ export default {
       })
     },
     closeHandle() {
+      this.parentName = undefined
       this.editForm = { isActive: true, sort: 0 }
       if (this.$refs['editForm']) {
         this.$refs['editForm'].resetFields()
