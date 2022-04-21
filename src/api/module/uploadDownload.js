@@ -34,8 +34,11 @@ export const uploadDownloads = {
       method: 'put'
     })
   },
+  getDownloadUrl: function(id) {
+    return process.env.VUE_APP_BASE_API + 'api/upload-download/download/' + id
+  },
   download: function(id) {
-    window.location.href = process.env.VUE_APP_BASE_API + 'api/upload-download/download/' + id
+    window.location.href = this.getDownloadUrl(id)
   },
   upload: function(data) {
     return request({
