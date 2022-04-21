@@ -20,17 +20,20 @@
         <div class="details-content"><label>所有者：</label>{{ viewData.ownerUserId }}</div>
       </el-col>
       <el-col :span="12">
+        <div class="details-content"><label>上传用户：</label>{{ viewData.creatorId }}</div>
+      </el-col>
+      <el-col :span="12">
+        <div class="details-content"><label>上传时间：</label>{{ formatDate(viewData.creationTime) }}</div>
+      </el-col>
+      <el-col :span="24">
         <div class="details-content"><label>是否启用：</label>
           <el-tag :type="viewData.isActive? 'success':'info'" effect="dark">
             {{ viewData.isActive?'启用':'禁用' }}
           </el-tag>
         </div>
       </el-col>
-      <el-col :span="12">
-        <div class="details-content"><label>上传用户：</label>{{ viewData.creatorId }}</div>
-      </el-col>
-      <el-col :span="12">
-        <div class="details-content"><label>上传时间：</label>{{ formatDate(viewData.creationTime) }}</div>
+      <el-col :span="24">
+        <div class="details-content"><label>下载地址：</label>{{ downloadUrl }}</div>
       </el-col>
     </el-row>
     <div slot="footer" class="dialog-footer">
@@ -47,6 +50,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      downloadUrl: null,
       viewData: { }
     }
   },
@@ -56,6 +60,7 @@ export default {
       uploadDownloads.getUploadDownload(id).then((response) => {
         loading.close()
         this.viewData = response
+        this.downloadUrl = uploadDownloads.getDownloadUrl(id)
         // 显示dialog
         this.dialogVisible = true
       }).catch(() => {
