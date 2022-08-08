@@ -115,10 +115,10 @@ export default {
       showSwitchTenant: false,
       loginForm: {
         grant_type: 'password',
-        scope: 'FastMall',
-        username: 'admin',
-        password: '1q2w3E*',
-        client_id: 'FastMall_App',
+        scope: 'DailyManage',
+        username: process.env.VUE_APP_Login_User,
+        password: process.env.VUE_APP_Login_Password,
+        client_id: 'DailyManage_App',
         client_secret: '1q2w3e*'
       },
       loginRules: {
