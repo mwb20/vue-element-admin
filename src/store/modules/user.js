@@ -1,5 +1,5 @@
 import { abpApplicationConfiguration } from '@/api/abpFramework'
-import { login, logout } from '@/api/auth'
+import { login } from '@/api/auth'
 import { getToken, setToken, removeToken, getTenant, setTenant } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
@@ -86,20 +86,16 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_PERMISSIONS', [])
-        removeToken()
-        resetRouter()
+      commit('SET_TOKEN', '')
+      commit('SET_PERMISSIONS', [])
+      removeToken()
+      resetRouter()
 
-        // reset visited views and cached views
-        // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-        dispatch('tagsView/delAllViews', null, { root: true })
+      // reset visited views and cached views
+      // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+      dispatch('tagsView/delAllViews', null, { root: true })
 
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      resolve()
     })
   },
 
