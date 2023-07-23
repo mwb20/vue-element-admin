@@ -30,11 +30,11 @@
           <el-form-item label="手机号" prop="phoneNumber" verify phone can-be-empty>
             <el-input v-model="editForm.phoneNumber" autocomplete="off" />
           </el-form-item>
+          <el-form-item label="启用">
+            <el-switch v-model="editForm.isActive" class="drawer-switch" />
+          </el-form-item>
           <el-form-item label="多次登录失败锁定账户">
             <el-switch v-model="editForm.lockoutEnabled" class="drawer-switch" />
-          </el-form-item>
-          <el-form-item label="二次认证">
-            <el-switch v-model="editForm.twoFactorEnabled" class="drawer-switch" />
           </el-form-item>
         </el-form>
       </el-tab-pane>
