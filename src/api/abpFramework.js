@@ -220,11 +220,11 @@ export const user = {
       method: 'get'
     })
   },
-  updateUser: function({ id, password, concurrencyStamp, userName, name, surname, email, phoneNumber, twoFactorEnabled, lockoutEnabled, roleNames, extraProperties }) {
+  updateUser: function({ id, password, concurrencyStamp, userName, name, surname, email, phoneNumber, isActive, lockoutEnabled, roleNames, extraProperties }) {
     return request({
       url: '/api/identity/users/' + id,
       method: 'put',
-      data: { password, concurrencyStamp, userName, name, surname, email, phoneNumber, twoFactorEnabled, lockoutEnabled, roleNames, extraProperties }
+      data: { password, concurrencyStamp, userName, name, surname, email, phoneNumber, isActive, lockoutEnabled, roleNames, extraProperties }
     })
   },
   deleteUser: function(id) {
