@@ -1,8 +1,5 @@
 ﻿<template>
   <div class="tools-table">
-    <div class="tools-container right-align">
-      <el-button type="primary" size="small" @click="$refs.edit.created()"><i class="el-icon-plus" />创建根节点</el-button>
-    </div>
     <div class="app-container">
       <div class="filter-container" @keydown.enter="listQuery.page=1,getList()">
         <el-row :gutter="10">
@@ -11,6 +8,11 @@
             <el-input v-model="listQuery.filter" placeholder="请输入搜索内容" class="input-with-select" size="small">
               <el-button slot="append" icon="el-icon-search" @click="listQuery.page=1,getList()" />
             </el-input>
+          </el-col>
+          <el-col :span="12">
+            <div class="tools-container tools-inline right-align">
+              <el-button type="primary" size="small" @click="$refs.edit.created()"><i class="el-icon-plus" />创建根节点</el-button>
+            </div>
           </el-col>
         </el-row>
       </div>

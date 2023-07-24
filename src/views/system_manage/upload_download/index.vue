@@ -1,8 +1,5 @@
 ﻿<template>
   <div class="tools-table">
-    <div class="tools-container right-align">
-      <el-button type="primary" size="small" @click="$refs.edit.created()"><i class="el-icon-plus" />新增</el-button>
-    </div>
     <div class="app-container">
       <div class="filter-container" @keydown.enter="listQuery.page=1,getList()">
         <el-row :gutter="10">
@@ -24,6 +21,11 @@
               </div>
               <el-button slot="reference" icon="el-icon-s-operation" circle />
             </el-popover>
+          </el-col>
+          <el-col :span="12">
+            <div class="tools-container tools-inline right-align">
+              <el-button type="primary" size="small" @click="$refs.edit.created()"><i class="el-icon-plus" />新增</el-button>
+            </div>
           </el-col>
         </el-row>
       </div>
