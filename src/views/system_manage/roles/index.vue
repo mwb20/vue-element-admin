@@ -1,10 +1,10 @@
 ﻿<template>
-  <div class="tools-table">
+  <div class="tools-table tools-inline">
     <div class="app-container">
       <div class="filter-container">
         <el-row :gutter="10">
           <el-col :span="24">
-            <div class="tools-container tools-inline right-align">
+            <div class="tools-container right-align">
               <el-button type="primary" size="small" @click="$refs.edit.created()"><i class="el-icon-plus" />创建</el-button>
             </div>
           </el-col>

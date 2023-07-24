@@ -89,7 +89,11 @@ label.title{
     padding: 10px 20px;
     background: #fff;
 }
-.tools-inline{
+.tools-table.tools-inline .app-container{
+    padding-top: 5px;
+    margin-top: 0;
+}
+.tools-inline .tools-container{
     padding: 18px 10px 0 20px;
 }
 //-----------------

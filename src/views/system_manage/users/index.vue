@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="tools-table">
+  <div class="tools-table tools-inline">
     <div class="app-container">
       <div class="filter-container" @keydown.enter="listQuery.page=1,getList()">
         <el-row :gutter="10">
