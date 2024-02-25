@@ -137,7 +137,7 @@ export default {
             this.editForm.roleNames.push(u.name)
           })
           const loading = this.$loading()
-          if (this.editForm.id !== null) {
+          if (this.editForm.id) {
             user.updateUser(this.editForm).then((result) => {
               loading.close()
               this.$emit('save-success')

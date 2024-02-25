@@ -1,6 +1,6 @@
 import { abpApplicationConfiguration } from '@/api/abpFramework'
-import { login } from '@/api/auth'
-import { getToken, setToken, removeToken, getTenant, setTenant } from '@/utils/auth'
+import { login, logout } from '@/api/auth'
+import { getToken, setToken, removeToken, getTenant, setTenant, getRefreshToken, setRefreshToken, removeRefreshToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
@@ -40,6 +40,10 @@ const actions = {
       login(userInfo).then(response => {
         commit('SET_TOKEN', response.access_token)
         setToken(response.access_token)
+        // 如果存在刷新令牌时将其暂存起来
+        if (response.refresh_token) {
+          setRefreshToken(response.refresh_token)
+        }
         resolve()
       }).catch(error => {
         reject(error)
@@ -86,16 +90,25 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      commit('SET_TOKEN', '')
-      commit('SET_PERMISSIONS', [])
-      removeToken()
-      resetRouter()
+      logout({ client_id: process.env.VUE_APP_CLIENTId, secret: process.env.VUE_APP_SCOPE, token: getToken(), token_type_hint: 'access_token' }).then(response => {
+        const refreshToken = getRefreshToken()
+        // 存在刷新token时才需要调刷新token销毁接口
+        if (refreshToken) {
+          logout({ client_id: process.env.VUE_APP_CLIENTId, secret: process.env.VUE_APP_SCOPE, token: refreshToken, token_type_hint: 'refresh_token' })
+        }
+        // 清除token并重置路由
+        commit('SET_TOKEN', '')
+        commit('SET_PERMISSIONS', [])
+        removeToken()
+        removeRefreshToken()
+        resetRouter()
 
-      // reset visited views and cached views
-      // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-      dispatch('tagsView/delAllViews', null, { root: true })
+        // reset visited views and cached views
+        // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+        dispatch('tagsView/delAllViews', null, { root: true })
 
-      resolve()
+        resolve()
+      })
     })
   },
 

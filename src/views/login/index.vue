@@ -114,12 +114,11 @@ export default {
     return {
       showSwitchTenant: false,
       loginForm: {
-        grant_type: 'password',
-        scope: 'FastMall',
         username: 'admin',
         password: '1q2w3E*',
-        client_id: 'FastMall_App',
-        client_secret: '1q2w3e*'
+        grant_type: process.env.VUE_APP_GRANT_TYPE,
+        scope: process.env.VUE_APP_SCOPE,
+        client_id: process.env.VUE_APP_CLIENTId
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],

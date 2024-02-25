@@ -10,10 +10,21 @@ export const abpApiDefinition = {
 }
 
 export const abpApplicationConfiguration = {
-  getApplicationConfiguration: function() {
+  getApplicationConfiguration: function(includeLocalizationResources) {
     return request({
       url: '/api/abp/application-configuration',
-      method: 'get'
+      method: 'get',
+      params: { includeLocalizationResources }
+    })
+  }
+}
+
+export const abpApplicationLocalization = {
+  getApplicationLocalizations: function({ cultureName, onlyDynamics }) {
+    return request({
+      url: '/api/abp/application-localization',
+      method: 'get',
+      params: { cultureName, onlyDynamics }
     })
   }
 }
@@ -34,11 +45,11 @@ export const abpTenant = {
 }
 
 export const account = {
-  createRegister: function({ userName, emailAddress, password, appName }) {
+  createRegister: function({ userName, emailAddress, password, appName, extraProperties }) {
     return request({
       url: '/api/account/register',
       method: 'post',
-      data: { userName, emailAddress, password, appName }
+      data: { userName, emailAddress, password, appName, extraProperties }
     })
   },
   createSendPasswordResetCode: function({ email, appName, returnUrl, returnUrlHash }) {
@@ -48,11 +59,50 @@ export const account = {
       data: { email, appName, returnUrl, returnUrlHash }
     })
   },
+  createVerifyPasswordResetToken: function({ userId, resetToken }) {
+    return request({
+      url: '/api/account/verify-password-reset-token',
+      method: 'post',
+      data: { userId, resetToken }
+    })
+  },
   createResetPassword: function({ userId, resetToken, password }) {
     return request({
       url: '/api/account/reset-password',
       method: 'post',
       data: { userId, resetToken, password }
+    })
+  }
+}
+
+export const dynamicClaims = {
+  createRefresh: function() {
+    return request({
+      url: '/api/account/dynamic-claims/refresh',
+      method: 'post'
+    })
+  }
+}
+
+export const emailSettings = {
+  getEmailing: function() {
+    return request({
+      url: '/api/setting-management/emailing',
+      method: 'get'
+    })
+  },
+  createEmailing: function({ smtpHost, smtpPort, smtpUserName, smtpPassword, smtpDomain, smtpEnableSsl, smtpUseDefaultCredentials, defaultFromAddress, defaultFromDisplayName }) {
+    return request({
+      url: '/api/setting-management/emailing',
+      method: 'post',
+      data: { smtpHost, smtpPort, smtpUserName, smtpPassword, smtpDomain, smtpEnableSsl, smtpUseDefaultCredentials, defaultFromAddress, defaultFromDisplayName }
+    })
+  },
+  createSendTestEmail: function({ senderEmailAddress, targetEmailAddress, subject, body }) {
+    return request({
+      url: '/api/setting-management/emailing/send-test-email',
+      method: 'post',
+      data: { senderEmailAddress, targetEmailAddress, subject, body }
     })
   }
 }
@@ -71,6 +121,36 @@ export const features = {
       method: 'put',
       params: { providerName, providerKey },
       data: { features }
+    })
+  },
+  deleteFeatures: function({ providerName, providerKey }) {
+    return request({
+      url: '/api/feature-management/features',
+      method: 'delete',
+      params: { providerName, providerKey }
+    })
+  }
+}
+
+export const login = {
+  login: function({ userNameOrEmailAddress, password, rememberMe }) {
+    return request({
+      url: '/api/account/login',
+      method: 'post',
+      data: { userNameOrEmailAddress, password, rememberMe }
+    })
+  },
+  logout: function() {
+    return request({
+      url: '/api/account/logout',
+      method: 'get'
+    })
+  },
+  checkPassword: function({ userNameOrEmailAddress, password, rememberMe }) {
+    return request({
+      url: '/api/account/check-password',
+      method: 'post',
+      data: { userNameOrEmailAddress, password, rememberMe }
     })
   }
 }
@@ -96,20 +176,20 @@ export const permissions = {
 export const profile = {
   getMyProfile: function() {
     return request({
-      url: '/api/identity/my-profile',
+      url: '/api/account/my-profile',
       method: 'get'
     })
   },
-  updateMyProfile: function({ userName, email, name, surname, phoneNumber, extraProperties }) {
+  updateMyProfile: function({ userName, email, name, surname, phoneNumber, concurrencyStamp, extraProperties }) {
     return request({
-      url: '/api/identity/my-profile',
+      url: '/api/account/my-profile',
       method: 'put',
-      data: { userName, email, name, surname, phoneNumber, extraProperties }
+      data: { userName, email, name, surname, phoneNumber, concurrencyStamp, extraProperties }
     })
   },
   changePassword: function({ currentPassword, newPassword }) {
     return request({
-      url: '/api/identity/my-profile/change-password',
+      url: '/api/account/my-profile/change-password',
       method: 'post',
       data: { currentPassword, newPassword }
     })
@@ -123,11 +203,11 @@ export const role = {
       method: 'get'
     })
   },
-  getRoles: function({ sorting, skipCount, maxResultCount }) {
+  getRoles: function({ filter, sorting, skipCount, maxResultCount }) {
     return request({
       url: '/api/identity/roles',
       method: 'get',
-      params: { sorting, skipCount, maxResultCount }
+      params: { filter, sorting, skipCount, maxResultCount }
     })
   },
   createRole: function({ name, isDefault, isPublic, extraProperties }) {
@@ -143,11 +223,11 @@ export const role = {
       method: 'get'
     })
   },
-  updateRole: function({ id, concurrencyStamp, name, isDefault, isPublic, extraProperties }) {
+  updateRole: function({ id, name, isDefault, isPublic, concurrencyStamp, extraProperties }) {
     return request({
       url: '/api/identity/roles/' + id,
       method: 'put',
-      data: { concurrencyStamp, name, isDefault, isPublic, extraProperties }
+      data: { name, isDefault, isPublic, concurrencyStamp, extraProperties }
     })
   },
   deleteRole: function(id) {
@@ -165,11 +245,11 @@ export const tenant = {
       method: 'get'
     })
   },
-  updateTenant: function({ id, name, extraProperties }) {
+  updateTenant: function({ id, name, concurrencyStamp, extraProperties }) {
     return request({
       url: '/api/multi-tenancy/tenants/' + id,
       method: 'put',
-      data: { name, extraProperties }
+      data: { name, concurrencyStamp, extraProperties }
     })
   },
   deleteTenant: function(id) {
@@ -185,11 +265,11 @@ export const tenant = {
       params: { filter, sorting, skipCount, maxResultCount }
     })
   },
-  createTenant: function({ adminEmailAddress, adminPassword, name, extraProperties }) {
+  createTenant: function({ name, adminEmailAddress, adminPassword, extraProperties }) {
     return request({
       url: '/api/multi-tenancy/tenants',
       method: 'post',
-      data: { adminEmailAddress, adminPassword, name, extraProperties }
+      data: { name, adminEmailAddress, adminPassword, extraProperties }
     })
   },
   getDefaultConnectionString: function(id) {
@@ -213,6 +293,28 @@ export const tenant = {
   }
 }
 
+export const timeZoneSettings = {
+  getTimezone: function() {
+    return request({
+      url: '/api/setting-management/timezone',
+      method: 'get'
+    })
+  },
+  createTimezone: function(timezone) {
+    return request({
+      url: '/api/setting-management/timezone',
+      method: 'post',
+      params: { timezone }
+    })
+  },
+  getTimezones: function() {
+    return request({
+      url: '/api/setting-management/timezone/timezones',
+      method: 'get'
+    })
+  }
+}
+
 export const user = {
   getUser: function(id) {
     return request({
@@ -220,11 +322,11 @@ export const user = {
       method: 'get'
     })
   },
-  updateUser: function({ id, password, concurrencyStamp, userName, name, surname, email, phoneNumber, isActive, lockoutEnabled, roleNames, extraProperties }) {
+  updateUser: function({ id, userName, name, surname, email, phoneNumber, isActive, lockoutEnabled, roleNames, password, concurrencyStamp, extraProperties }) {
     return request({
       url: '/api/identity/users/' + id,
       method: 'put',
-      data: { password, concurrencyStamp, userName, name, surname, email, phoneNumber, isActive, lockoutEnabled, roleNames, extraProperties }
+      data: { userName, name, surname, email, phoneNumber, isActive, lockoutEnabled, roleNames, password, concurrencyStamp, extraProperties }
     })
   },
   deleteUser: function(id) {
@@ -240,11 +342,11 @@ export const user = {
       params: { filter, sorting, skipCount, maxResultCount }
     })
   },
-  createUser: function({ password, userName, name, surname, email, phoneNumber, twoFactorEnabled, lockoutEnabled, roleNames, extraProperties }) {
+  createUser: function({ userName, name, surname, email, phoneNumber, isActive, lockoutEnabled, roleNames, password, extraProperties }) {
     return request({
       url: '/api/identity/users',
       method: 'post',
-      data: { password, userName, name, surname, email, phoneNumber, twoFactorEnabled, lockoutEnabled, roleNames, extraProperties }
+      data: { userName, name, surname, email, phoneNumber, isActive, lockoutEnabled, roleNames, password, extraProperties }
     })
   },
   getRole: function(id) {
@@ -266,11 +368,10 @@ export const user = {
       method: 'get'
     })
   },
-  getUserByUsername: function(username) {
+  getUserByUsername: function(userName) {
     return request({
-      url: '/api/identity/users/by-username/' + username,
-      method: 'get',
-      params: { username }
+      url: '/api/identity/users/by-username/' + userName,
+      method: 'get'
     })
   },
   getUserByEmail: function(email) {

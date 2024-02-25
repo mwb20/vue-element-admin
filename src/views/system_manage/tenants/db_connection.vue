@@ -36,8 +36,8 @@ export default {
         this.dialogVisible = true
         if (result) {
           this.useSharedDatabase = false
+          this.$set(this.editForm, 'defaultConnectionString', result)
         }
-        this.$set(this.editForm, 'defaultConnectionString', result)
       }).catch(() => {
         loading.close()
         // 出现异常时调用关闭处理方法重置参数，否则导致无法触发监听
