@@ -36,6 +36,7 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
+    console.log(commit)
     return new Promise((resolve, reject) => {
       login(userInfo).then(response => {
         commit('SET_TOKEN', response.access_token)
@@ -54,8 +55,23 @@ const actions = {
   // get user info
   getInfo({ commit }) {
     return new Promise((resolve, reject) => {
-      abpApplicationConfiguration.getApplicationConfiguration().then(response => {
-        const { auth } = response
+      abpApplicationConfiguration.getApplicationConfiguration().then(async response => {
+        let { auth, currentUser } = response
+        const refreshToken = getRefreshToken()
+        // 当前用户id为空，且刷新token不为空时，刷新token后重新获取一次
+        if (!currentUser.id && refreshToken) {
+          // 刷新token
+          await this.dispatch('user/login', {
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+            client_id: process.env.VUE_APP_CLIENTId
+          })
+          // 重新获取程序配置
+          await abpApplicationConfiguration.getApplicationConfiguration().then(lastRes => {
+            auth = lastRes.auth
+            currentUser = lastRes.currentUser
+          })
+        }
         if (!auth) {
           reject('验证失败，请重新登录。')
         }
