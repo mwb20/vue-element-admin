@@ -1,5 +1,6 @@
 import { Message } from 'element-ui'
 import store from '@/store'
+import { getRefreshToken } from '@/utils/auth'
 
 export default function axiosHandler(service) {
   // request interceptor
@@ -45,16 +46,21 @@ export default function axiosHandler(service) {
     response => {
       return response.data
     },
-    error => {
-      console.log(error.message) // for debug
+    async error => {
       let msg
-      if (error.response && error.response.data.error && error.response.data.error.message) {
-        if (error.response.data.error.details) {
-          // 设置错误为后端返回的错误明细
-          msg = error.response.data.error.details
-        } else {
-          // 设置错误消息为后端返回的错误消息
-          msg = error.response.data.error.message
+      if (error.response) {
+        // 401时表示未授权或token过期
+        if (error.response.status === 401) {
+          // 刷新token并重新请求
+          return await refreshToken(error, service)
+        } else if (error.response.data.error && error.response.data.error.message) {
+          if (error.response.data.error.details) {
+            // 设置错误为后端返回的错误明细
+            msg = error.response.data.error.details
+          } else {
+            // 设置错误消息为后端返回的错误消息
+            msg = error.response.data.error.message
+          }
         }
       } else {
         msg = error.message
@@ -67,4 +73,25 @@ export default function axiosHandler(service) {
       return Promise.reject(error)
     }
   )
+}
+// 刷新token
+async function refreshToken(response, service) {
+  const authToken = response.config.headers['Authorization']
+  const refreshToken = getRefreshToken()
+  if (!authToken || authToken === 'Bearer ' + refreshToken) {
+    return response.data
+  }
+  await store.dispatch('user/login', {
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+    client_id: process.env.VUE_APP_CLIENTId
+  })
+    .then(() => {
+      response.config.headers['Authorization'] = 'Bearer ' + store.getters.token
+    })
+  let refResult
+  await service(response.config).then(lastRes => {
+    refResult = lastRes
+  })
+  return refResult
 }
