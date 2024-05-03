@@ -66,7 +66,7 @@ const actions = {
             refresh_token: refreshToken,
             client_id: process.env.VUE_APP_CLIENTId
           })
-          // 重新获取程序配置
+          // 重新获取应用配置
           await abpApplicationConfiguration.getApplicationConfiguration().then(lastRes => {
             auth = lastRes.auth
             currentUser = lastRes.currentUser
