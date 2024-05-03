@@ -36,7 +36,6 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    console.log(commit)
     return new Promise((resolve, reject) => {
       login(userInfo).then(response => {
         commit('SET_TOKEN', response.access_token)
