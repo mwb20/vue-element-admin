@@ -36,7 +36,6 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    console.log(commit)
     return new Promise((resolve, reject) => {
       login(userInfo).then(response => {
         commit('SET_TOKEN', response.access_token)
@@ -66,7 +65,7 @@ const actions = {
             refresh_token: refreshToken,
             client_id: process.env.VUE_APP_CLIENTId
           })
-          // 重新获取程序配置
+          // 重新获取应用配置
           await abpApplicationConfiguration.getApplicationConfiguration().then(lastRes => {
             auth = lastRes.auth
             currentUser = lastRes.currentUser
