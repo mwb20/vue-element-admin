@@ -25,8 +25,14 @@ export function filterAsyncRoutes(routes, permissions) {
     if (hasPermission(permissions, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, permissions)
+        // 当存在子路由，且经过权限过滤后子路由长度大于0时才加入返回数组
+        if (tmp.children.length > 0) {
+          res.push(tmp)
+        }
+      } else {
+        // 不存在子路由时直接加入返回数组
+        res.push(tmp)
       }
-      res.push(tmp)
     }
   })
 
