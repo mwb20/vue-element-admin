@@ -8,6 +8,7 @@ import Layout from '@/layout'
 
 /* Router Modules */
 import sysModuleRouter from './modules/sysModule'
+import quueCallModule from './modules/quueCallModule'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -113,6 +114,7 @@ export const constantRoutes = [
 export const asyncRoutes = [
   /** 当你的路由太长时可以将他们拆分成几个小模块 **/
   sysModuleRouter,
+  quueCallModule,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
